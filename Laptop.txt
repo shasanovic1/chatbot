@@ -1,0 +1,15 @@
+package secondChatbot;
+
+public class Laptop {
+	
+	private String name;
+	private String link;
+	private String path;
+	
+	public Laptop(String name, String link, String path) {
+		name = this.name;
+		link = this.link;
+		path = this.path;
+	}
+
+}

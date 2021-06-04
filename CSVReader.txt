@@ -1,0 +1,89 @@
+package secondChatbot;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class CSVReader {
+	
+	private String[] values;
+
+	public static void main(String[] args) {
+		final CSVReader list = new CSVReader();
+		
+	}
+	
+	public CSVReader() {
+		String path = "src\\resources\\csv\\laptops.csv";
+		String line = "";
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path));
+			
+			while ((line = br.readLine()) != null) {
+				values = line.split(",");
+				System.out.println("Laptop: " + values[0] + " Link: " + values[1] + " Image: " + values[2]);
+				
+			}
+			br.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public String getLaptopName(int i) {
+		i = i * 3;
+		if (1 <= i && 17 >= i && i%3 == 0) {
+			return values[i];
+		}
+		else if (21 <= i && 35 >= i && i%3 == 0) {
+			return values[i];
+		}
+		else if (39 <= i && 51 >= i && i%3 == 0) {
+			return values[i];
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public String getLaptopLink(int i) {
+		i = i * 3;
+		if (1 <= i && 17 >= i && i%3 == 0) {
+			return values[i+1];
+		}
+		else if (21 <= i && 35 >= i && i%3 == 0) {
+			return values[i+1];
+		}
+		else if (39 <= i && 51 >= i && i%3 == 0) {
+			return values[i+1];
+		}
+		else {
+			return null;
+		}
+	}
+	public String getImagePath(int i) {
+		i = i * 3;
+		if (1 <= i && 17 >= i && i%3 == 0) {
+			return values[i+2];
+		}
+		else if (21 <= i && 35 >= i && i%3 == 0) {
+			return values[i+2];
+		}
+		else if (39 <= i && 51 >= i && i%3 == 0) {
+			return values[i+2];
+		}
+		else {
+			return null;
+		}
+	}
+	
+
+}

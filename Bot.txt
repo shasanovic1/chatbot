@@ -1,0 +1,130 @@
+package secondChatbot;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class Bot extends GUI {
+	
+	public static int successfulResponseCount = 0;
+	public static Customer customer;
+	private static String name;
+	private static int age;
+	private static String occupation;
+	private static String laptopPurpose;
+	private static String[] vowels = new String[] {"a", "e", "i", "o", "u"};
+	
+	private static CSVReader laptopList = new CSVReader();
+
+	public static void main (String args[]) {
+		
+	}
+	
+	public static void bot(String message) {
+		
+		if (message.toLowerCase().contains("yes") && successfulResponseCount == 0) {
+			successfulResponseCount++;
+			botResponse("Great! Let me ask you a few questions. Please pay attention to the questions and respond appropriately.");
+			botResponse("Firstly, lets find out a little about you. What is your name?");
+		}
+		else if (successfulResponseCount == 0 && !message.toLowerCase().contains("yes")) {
+			botResponse("If I am not correct, please close the chat. Otherwise, type \"Yes\"");
+		}
+		else if (successfulResponseCount == 1 && message.toLowerCase().contains("yes")) {
+			botResponse("Your name can't be \"Yes\".");
+		}
+		else if (successfulResponseCount == 1 && message.toLowerCase().contains("no")) {
+			botResponse("Your name can't be \"No\".");
+		}
+		else if (successfulResponseCount == 1 && (strToIntVerif(message) == true)) {
+			botResponse("Your name can't be a number. Let's stop being silly now.");
+		}
+		else if (successfulResponseCount == 1 && (!(message.toLowerCase().contains("yes") || !(message.toLowerCase().contains("no")))) == false) {
+			successfulResponseCount++;
+			name = message.substring(0, 1).toUpperCase() + message.substring(1);
+			botResponse("Well hello there, " + name + ". It's nice to meet you.");
+			botResponse("How old are you? (We ask because our servers run on several super quantum computers and have access to a vast range of complex data that will be of aid in your choosing of a laptop appropriate to people in your demographic.)");
+		}
+		else if ((successfulResponseCount == 2) && ageVerification(message)) {
+			successfulResponseCount++;
+			age = toInt(message);
+			botResponse("Okay " + name + ", next question.");
+			botResponse("What is your occupation?");
+		}
+		else if (successfulResponseCount == 3 && ((!(message.toLowerCase().contains("yes") || !(message.toLowerCase().contains("no")))) == false) && strToIntVerif(message) == false) {
+			successfulResponseCount++;
+			botResponse("At the moment we are unable to verify occupations but we are able to analyse them.");
+			botResponse("So you claim you're a" + firstLetterVowelCheck(message) + message.toLowerCase() + "? If you say so...");
+			botResponse("Thank you for your patience, " + name + ". I just have one more question before I start whizzing around the internet to find you your ideal laptop.");
+			botResponse("What do you wish to do with your laptop?");
+			botResponse("Please type the number of the answer that best describes your intentions:");
+			botResponse("1) Word Crunching\n2)Powerpoint Presentations\n3)Casual video streaming\n4)Graphic Design (including media editing)\n5)Video Games");
+		}
+		else if((successfulResponseCount == 4) && (strToIntVerif(message) == true) &&  toInt(message) == 1) {
+			String laptopName = laptopList.getLaptopName(toInt(message));
+			String laptopLink = laptopList.getLaptopLink(toInt(message));
+			String laptopImage = laptopList.getImagePath(toInt(message));
+			Laptop laptop = new Laptop(laptopName, laptopLink, laptopImage);
+			LaptopGUI newLaptop = new LaptopGUI(laptopName, laptopLink, laptopImage);
+			
+		}
+		else if((successfulResponseCount == 4) && (strToIntVerif(message) == true) &&  toInt(message) == 2) {
+			
+		}
+		else if((successfulResponseCount == 4) && (strToIntVerif(message) == true) &&  toInt(message) == 3) {
+	
+		}
+		else if((successfulResponseCount == 4) && (strToIntVerif(message) == true) &&  toInt(message) == 4) {
+			
+		}
+		else if((successfulResponseCount == 4) && (strToIntVerif(message) == true) &&  toInt(message) == 4) {
+			
+		}
+		
+	}
+	
+	public static void botResponse(String text) {
+		textArea.append("BOT: " + text + "\n");
+	}
+	
+	public static String firstLetterVowelCheck(String message) {
+		for (int i = 0; i < vowels.length; i++) {
+			if (message.substring(0,  1).equals(vowels[i])) {
+				break;
+			}
+			else {
+				return " ";
+			}
+		}
+		return "n ";
+	}
+	
+	public static boolean strToIntVerif(String message) {
+		try {
+			int result = Integer.parseInt(message);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	public static int toInt(String message) {
+		try {
+			int result = Integer.parseInt(message);
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+		return Integer.parseInt(message);
+	}
+	
+	public static boolean ageVerification(String message) {
+		try { 
+			int result = Integer.parseInt(message); 
+			} catch (NumberFormatException e) {
+				botResponse("It doesn't seem like that's a valid age. Please enter a valid age.");
+				return false;
+		}
+		return true;
+	}
+
+}

@@ -1,0 +1,110 @@
+package secondChatbot;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+
+import javax.swing.*;
+
+public class GUI implements ActionListener {
+
+	private JFrame frame;
+	private JFrame msgFrame;
+	private JPanel panel;
+	protected static JTextArea textArea;
+	private JTextField msgBox;
+	private JScrollPane scrollBar;
+	
+	public GUI(){
+		
+		frame = new JFrame();
+		frame.setSize(600, 600);
+		frame.setResizable(false);
+		frame.setTitle("Mr. Lappy - Chatbot Assistant");
+		
+		textArea = new JTextArea();
+		textArea.setSize(550, 300);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		textArea.setEditable(false);;
+		textArea.setVisible(true);
+		
+		scrollBar = new JScrollPane(textArea);
+		scrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollBar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		frame.add(scrollBar);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		msgFrame = new JFrame();
+		msgFrame.setSize(300, 75);
+		msgFrame.setResizable(true);
+		msgFrame.setTitle("Type your response here");
+		
+		msgBox = new JTextField();
+		msgBox.setSize(150, 300);
+		msgBox.setEditable(true);
+		msgBox.setVisible(true);
+		
+		msgFrame.add(msgBox);
+		
+		msgFrame.setVisible(true);
+		msgFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		textArea.append("\n\n\nBOT: Hi, I'm Mr. Lappy! That stands for: \n	L. aptop\n	A. ssistance \n	P. rofessional\n	P. roviding\n	Y. ou a valuable service!\n");
+		textArea.append("BOT: I have a feeling you're here because you need help with deciding which laptop is best for you. Am I right?\n");
+		
+		msgBox.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String gText = msgBox.getText();
+				textArea.append("YOU: " + gText + "\n");
+				msgBox.setText("");
+				
+				Bot.bot(gText);
+				scroll(scrollBar, ScrollDirection.DOWN);
+			}
+			
+		});
+		
+	}
+	
+	public static void scroll (JScrollPane scrollBar, ScrollDirection direction) {
+		JScrollBar verticalBar = scrollBar.getVerticalScrollBar();
+		
+		int topOrBottom = direction == ScrollDirection.DOWN ?
+				verticalBar.getMaximum() :
+				verticalBar.getMinimum();
+				
+		AdjustmentListener scroller = new AdjustmentListener() {
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				Adjustable adjustable = e.getAdjustable();
+				adjustable.setValue(topOrBottom);
+				
+				verticalBar.removeAdjustmentListener(this);
+			}
+
+		};
+		verticalBar.addAdjustmentListener(scroller);
+	}
+	
+	public enum ScrollDirection {
+		UP, DOWN
+	}
+	
+	public static void main (String[] args) {
+		new GUI();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}

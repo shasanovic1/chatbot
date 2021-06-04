@@ -1,0 +1,21 @@
+package secondChatbot;
+
+public class Customer extends Bot {
+
+	private String name;
+	private int age;
+	private String occupation;
+	private String purposeOfLaptop;
+	
+	private String[] details;
+	
+	public Customer(String name, int age, String occupation, String purposeOfLaptop) {
+		
+		name = this.name;
+		age = this.age;
+		occupation = this.occupation;
+		purposeOfLaptop = this.purposeOfLaptop;
+		
+	}
+	
+}
